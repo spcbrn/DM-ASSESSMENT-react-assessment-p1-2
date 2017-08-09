@@ -2,19 +2,22 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import List from './components/List';
 import './App.css';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import {addTask} from './ducks/mainReducer';
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state ={
-      userInput: '',
-      taskList: []
+      userInput: ''
     }
 
   this.handleInputChange = this.handleInputChange.bind(this);
   this.handleNewTask = this.handleNewTask.bind(this);
   }
+
 
   handleInputChange(e) {
     this.setState({
@@ -23,26 +26,37 @@ class App extends Component {
   }
 
   handleNewTask() {
+    let ticker = this.props.taskList.length + this.props.completedTasks.length + this.props.deletedTasks.length + 1;
     if(this.state.userInput) {
-      var newList = this.state.taskList;
-      newList.push(this.state.userInput);
-      this.setState({
-          taskList: newList,
-          userInput: ''
-      })
+      let newTask = {
+        task: this.state.userInput,
+        id: ticker
+      };
+      // console.log(newTask);
+      this.props.addTask(newTask)
     }
+    this.setState({
+      userInput: ''
+    })
+  }
+
+  componentDidMount() {
+    axios.get('https://practiceapi.devmountain.com/api/tasks/')
+    .then(res => {
+      res.data.forEach(task => {
+        this.props.addTask(task);
+      })
+      console.log(res.data[0])
+    })
   }
 
   render() {
-    // console.log(this.state.taskList)
 
-    const tasksList = this.state.taskList.map( (item, idx) => {
+    const tasksList = this.props.taskList.map( (item, idx) => {
       return(
-        <List task={item} key={idx}/>
+        <List task={item.task} key={idx} id={item.id}/>
       )
     })
-
-    // console.log(tasksList)
 
     return (
       <div className="App">
@@ -59,4 +73,8 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(mapStateToProps, {addTask})(App);

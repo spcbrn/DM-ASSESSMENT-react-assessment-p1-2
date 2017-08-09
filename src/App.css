@@ -29,16 +29,18 @@
 }
 
 .taskDisplay {
-  /*display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;*/
+  background: lightblue;
+  border: solid 1px;
+  width: 40%;
+  margin-top: 8px;
 }
 
 .completeTask {
-  font-size: small;
+  font-size: x-small;
   background: green;
-  /*width: fit-content;*/
+  width: 25%;
+  height: 24px;
+  margin: auto;
 }
 
 .completeDisable {
@@ -51,9 +53,12 @@
 }
 
 .deleteTask {
-  font-size: small;
+  font-size: x-small;
   background: red;
-  /*width: fit-content;*/
+  width: 25%;
+  height: 24px;
+  margin: auto;
+  margin-top: 8px;
 }
 
 .App-intro {

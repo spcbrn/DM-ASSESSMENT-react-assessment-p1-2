@@ -1,4 +1,9 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {completeTask, deleteTask} from './../ducks/mainReducer';
+
+
+
 
 class List extends Component {
     constructor(props) {
@@ -6,7 +11,7 @@ class List extends Component {
 
         this.state = {
             completed: false,
-            display: true
+            removed: false
         }
 
         this.handleComplete = this.handleComplete.bind(this);
@@ -15,6 +20,10 @@ class List extends Component {
     }
 
     handleComplete() {
+        this.props.completeTask({
+            task: this.props.task,
+            id: this.props.id
+        })
         this.setState({
             completed: true
         })
@@ -22,8 +31,9 @@ class List extends Component {
 
     handleDelete() {
         this.setState({
-            display: false
+            removed: true
         })
+        this.props.deleteTask(this.props.id);
     }
 
     render() {
@@ -37,7 +47,7 @@ class List extends Component {
         }
 
         return(
-            <div className="taskDisplay" style={this.state.display ? null : styleCompButton}>
+            <div className="taskDisplay" style={this.state.removed ? styleCompButton : null}>
                 <p className="inlineTask" style={this.state.completed ? styleComp : null}>{this.props.task}</p>
                 <p className="completeTask" onClick={this.handleComplete} style={this.state.completed ? styleCompButton : null}>COMPLETED</p>
                 <p className="deleteTask" onClick={this.handleDelete}>REMOVE</p>
@@ -46,4 +56,5 @@ class List extends Component {
     }
 }
 
-export default List;
+
+export default connect(null, {completeTask, deleteTask})(List)
