@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import List from './components/List';
 import './App.css';
-import axios from 'axios';
 import {connect} from 'react-redux';
 import {addTask} from './ducks/mainReducer';
 
@@ -32,21 +31,10 @@ class App extends Component {
         task: this.state.userInput,
         id: ticker
       };
-      // console.log(newTask);
       this.props.addTask(newTask)
     }
     this.setState({
       userInput: ''
-    })
-  }
-
-  componentDidMount() {
-    axios.get('https://practiceapi.devmountain.com/api/tasks/')
-    .then(res => {
-      res.data.forEach(task => {
-        this.props.addTask(task);
-      })
-      console.log(res.data[0])
     })
   }
 
